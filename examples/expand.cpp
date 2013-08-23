@@ -18,6 +18,8 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
+// Compile with:
+// g++ -O3 -march=native -ffast-math -funroll-loops -I../headers expand.cpp
 
 // expand.cpp
 
@@ -27,20 +29,10 @@ using namespace std;
 
 int main(void)
 {
- Symbolic a("a"), b("b"), c("c"), y, z;
+ Symbolic x("x"), y("y"), z("z"), w("w"), f;
 
- y = (Symbolic(7)^3); cout << " y = " << y << endl;
- y = (a^0);           cout << " y = " << y << endl;
- y = (a^3);           cout << " y = " << y << endl;
+ f = ((x+y+z+w)^15);
+ cout << " f = " << f << endl;
  cout << endl;
-
- y = ((a+b-c)^3);     cout << " y = " << y << endl;
- cout << endl;
-
- y = (a+b)*(a-c);     cout << " y = " << y << endl;
- cout << endl;
-
- y = a+b;
- z = (y^4);           cout << " z = " << z << endl;
  return 0;
 }
