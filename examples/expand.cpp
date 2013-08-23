@@ -29,9 +29,15 @@ using namespace std;
 
 int main(void)
 {
- Symbolic x("x"), y("y"), z("z"), w("w"), f;
+ Symbolic x("x"), y("y"), z("z"), w("w"), e, f;
 
- f = ((x+y+z+w)^15);
+ // This 3 should be 15:
+ cout << "Calculating e = (x+y+z+w)^3" << endl;
+ e = ((x+y+z+w)^3);
+ cout << "Calculating f = e*(e+1)" << endl;
+ f = e*(e+1);
+ cout << "Done. Printing:" << endl;
+ cout << " e = " << e << endl;
  cout << " f = " << f << endl;
  cout << endl;
  return 0;
