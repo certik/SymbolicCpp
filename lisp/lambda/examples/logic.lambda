@@ -1,0 +1,41 @@
+
+
+;;    SymbolicC++ : An object oriented computer algebra system written in C++
+;;
+;;    Copyright (C) 2008 Yorick Hardy and Willi-Hans Steeb
+;;
+;;    This program is free software; you can redistribute it and/or modify
+;;    it under the terms of the GNU General Public License as published by
+;;    the Free Software Foundation; either version 2 of the License, or
+;;    (at your option) any later version.
+;;
+;;    This program is distributed in the hope that it will be useful,
+;;    but WITHOUT ANY WARRANTY; without even the implied warranty of
+;;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;;    GNU General Public License for more details.
+;;
+;;    You should have received a copy of the GNU General Public License along
+;;    with this program; if not, write to the Free Software Foundation, Inc.,
+;;    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+
+; logic.lambda :
+;   Basic logic operations implemented in the lambda calculus
+
+(define true  (lambda (x y) x))
+(define false (lambda (x y) y))
+(define if    (lambda (test consequent1 consequent2)
+                      (test consequent1 consequent2) ) )
+
+(define not (lambda (x) (if x false true)))
+
+(define or  (lambda x
+                    (if (empty? x) false
+                        (if (car x) true (apply or (cdr x))) ) ) )
+(define and (lambda x
+                    (if (empty? x) true
+                        (if (car x) (apply and (cdr x)) false)) ) )
+
+(define cond (lambda x
+                     (if (empty? x) false
+                         (if (caar x) (cadar x) (apply cond (cdr x))) ) ) )

@@ -1,0 +1,55 @@
+
+
+;;    SymbolicC++ : An object oriented computer algebra system written in C++
+;;
+;;    Copyright (C) 2008 Yorick Hardy and Willi-Hans Steeb
+;;
+;;    This program is free software; you can redistribute it and/or modify
+;;    it under the terms of the GNU General Public License as published by
+;;    the Free Software Foundation; either version 2 of the License, or
+;;    (at your option) any later version.
+;;
+;;    This program is distributed in the hope that it will be useful,
+;;    but WITHOUT ANY WARRANTY; without even the implied warranty of
+;;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;;    GNU General Public License for more details.
+;;
+;;    You should have received a copy of the GNU General Public License along
+;;    with this program; if not, write to the Free Software Foundation, Inc.,
+;;    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+
+; mapcar2.lambda
+
+(import logic.lambda)
+
+(define first  (lambda (x y) x))
+(define second (lambda (x y) y))
+(define cons   (lambda (x y w) (w x y)))
+(define car    (lambda (x) (x first)))
+(define cdr    (lambda (x) (x second)))
+(define cadr   (lambda (x) (car (cdr x))))
+(define caddr  (lambda (x) (car (cdr (cdr x)))))
+(define nil    (lambda (x) (x true true true true)))
+(define null   (lambda (x) (x (lambda (a b) false))))
+
+(define p (cons a b))
+(display       p) (newline)      ; ( lambda ( w ) ( w a b ) )
+(display (car p)) (newline)      ; a
+(display (cdr p)) (newline)      ; b
+(display (if (null nil) yes no)) ; yes
+(newline)
+(display (if (null   p) yes no)) ; no
+(newline)
+
+(define mapcar
+ (lambda (function l) 
+  (if (null l) nil
+      (cons (function (car l)) (mapcar function (cdr l))) ) ) )
+
+(define ml (mapcar (lambda (x) (+ x 1))
+                   (cons 1 (cons 2 (cons 3 nil))) ) )
+
+(display (car   ml)) (newline) ; 2
+(display (cadr  ml)) (newline) ; 3
+(display (caddr ml)) (newline) ; 4

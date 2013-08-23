@@ -1,0 +1,51 @@
+
+
+;;    SymbolicC++ : An object oriented computer algebra system written in C++
+;;
+;;    Copyright (C) 2008 Yorick Hardy and Willi-Hans Steeb
+;;
+;;    This program is free software; you can redistribute it and/or modify
+;;    it under the terms of the GNU General Public License as published by
+;;    the Free Software Foundation; either version 2 of the License, or
+;;    (at your option) any later version.
+;;
+;;    This program is distributed in the hope that it will be useful,
+;;    but WITHOUT ANY WARRANTY; without even the implied warranty of
+;;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;;    GNU General Public License for more details.
+;;
+;;    You should have received a copy of the GNU General Public License along
+;;    with this program; if not, write to the Free Software Foundation, Inc.,
+;;    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+
+; list.lambda :
+;   Basic list operations implemented in the lambda calculus
+
+(import logic.lambda)
+
+; Basic LISP operations on pairs and lists
+(define caar  (lambda (x) (car (car x))))
+(define caaar (lambda (x) (car (caar x))))
+(define cddr  (lambda (x) (cdr (cdr x))))
+(define cdddr (lambda (x) (cdr (cddr x))))
+(define cadr  (lambda (x) (car (cdr x))))
+(define cdar  (lambda (x) (cdr (car x))))
+(define caadr (lambda (x) (caar (cdr x))))
+(define caddr (lambda (x) (car (cddr x))))
+(define cadar (lambda (x) (car (cdar x))))
+
+; Perform an operation for each element of a list
+;   and combine with a given operation, using empty for the empty list
+(define combine-list
+ (lambda (combine op empty list)
+   (if (empty? list)
+       empty
+       (combine (op (car list))
+                (combine-list combine op empty (cdr list)) ) ) ) )
+
+; Map an operation over a list
+(define map (lambda (x) (combine-list cons x (list))))
+
+; Perform an operation for each element of a list
+(define for-each (combine-list sequence))

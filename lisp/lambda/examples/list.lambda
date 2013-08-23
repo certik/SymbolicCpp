@@ -1,0 +1,48 @@
+
+
+;;    SymbolicC++ : An object oriented computer algebra system written in C++
+;;
+;;    Copyright (C) 2008 Yorick Hardy and Willi-Hans Steeb
+;;
+;;    This program is free software; you can redistribute it and/or modify
+;;    it under the terms of the GNU General Public License as published by
+;;    the Free Software Foundation; either version 2 of the License, or
+;;    (at your option) any later version.
+;;
+;;    This program is distributed in the hope that it will be useful,
+;;    but WITHOUT ANY WARRANTY; without even the implied warranty of
+;;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;;    GNU General Public License for more details.
+;;
+;;    You should have received a copy of the GNU General Public License along
+;;    with this program; if not, write to the Free Software Foundation, Inc.,
+;;    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+
+; list.lambda :
+;   Basic list operations implemented in the lambda calculus
+
+(import logic.lambda)
+
+; Pairs for list / "cons cells"
+(define pair   (lambda (x y w) (w x y)))
+(define first  (lambda (x) (x true)))
+(define second (lambda (x) (x false)))
+   
+; Basic LISP operations on pairs and lists
+(define cons  pair)
+(define car   first)
+(define cdr   second)
+(define cadr  (lambda (x) (car (cdr x))))
+(define caddr (lambda (x) (car (cdr (cdr x)))))
+(define nil   (lambda (x) (x true true true true)))
+(define null? (lambda (x) (x (lambda (a) (lambda (b) false)))))
+
+; Map an operation over a list
+(define map
+ (lambda (op list)
+   (if (null? list)
+       list
+       (cons (op (car list))
+             (map op (cdr list)) ) ) ) )
+

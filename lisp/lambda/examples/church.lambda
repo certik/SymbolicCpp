@@ -1,0 +1,53 @@
+
+
+;;    SymbolicC++ : An object oriented computer algebra system written in C++
+;;
+;;    Copyright (C) 2008 Yorick Hardy and Willi-Hans Steeb
+;;
+;;    This program is free software; you can redistribute it and/or modify
+;;    it under the terms of the GNU General Public License as published by
+;;    the Free Software Foundation; either version 2 of the License, or
+;;    (at your option) any later version.
+;;
+;;    This program is distributed in the hope that it will be useful,
+;;    but WITHOUT ANY WARRANTY; without even the implied warranty of
+;;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;;    GNU General Public License for more details.
+;;
+;;    You should have received a copy of the GNU General Public License along
+;;    with this program; if not, write to the Free Software Foundation, Inc.,
+;;    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+
+; church.lambda :
+;   Implement whole numbers via Church numerals in the lambda calculus
+
+(import logic.lambda list.lambda)
+
+; numbers are represented by repeated application
+(define zero      false)
+(define zero?     (lambda (x) (x (lambda (x) false) true)))
+(define successor (lambda (n x y) (x (n x y))))
+
+; To find the predecessor we construct all Church numerals
+; with their successors using the repeated application
+; from the given church numeral.
+
+(define predecessor
+ (lambda (n) (first
+               (n (lambda (x) (pair (second x) (successor (second x))))
+                  (pair zero zero) ) ) ) )
+
+
+; Addition and multiplication are achieved by adding to the
+; repeated application and repeated application of
+; repeated application.
+
+(define add (lambda (a b x y) (a x (b x y))))
+(define multiply (lambda (a b) (a (lambda (x) (add b x)) zero)))
+
+; Convert a Church numeral to a number that can be displayed
+; using the built in increment (++) operator. )
+
+(define church->integer (lambda (n) (n ++ 0)))
+

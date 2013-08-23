@@ -1,0 +1,35 @@
+/*
+    SymbolicC++ : An object oriented computer algebra system written in C++
+
+    Copyright (C) 2008 Yorick Hardy and Willi-Hans Steeb
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License along
+    with this program; if not, write to the Free Software Foundation, Inc.,
+    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+*/
+
+
+/* picard.mpd */
+
+x0:=0:        /*initial x*/
+y0:=1:        /*initial y*/
+y:=y0:
+y1:=subs(y,x=s):
+f:=(x,y)->(x+y):         /*declare function f(x,y)=x+y*/
+
+for i from 1 to 5 do
+   y:=(y0+subs(int(f(s,y1),s),s=x)-subs(int(f(s,y1),s),s=x0)):
+   y1:=subs(y,x=s):
+end_for:
+
+print(y);

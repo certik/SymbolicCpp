@@ -1,0 +1,104 @@
+
+
+;;    SymbolicC++ : An object oriented computer algebra system written in C++
+;;
+;;    Copyright (C) 2008 Yorick Hardy and Willi-Hans Steeb
+;;
+;;    This program is free software; you can redistribute it and/or modify
+;;    it under the terms of the GNU General Public License as published by
+;;    the Free Software Foundation; either version 2 of the License, or
+;;    (at your option) any later version.
+;;
+;;    This program is distributed in the hope that it will be useful,
+;;    but WITHOUT ANY WARRANTY; without even the implied warranty of
+;;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;;    GNU General Public License for more details.
+;;
+;;    You should have received a copy of the GNU General Public License along
+;;    with this program; if not, write to the Free Software Foundation, Inc.,
+;;    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+
+; example.lambda :
+;   Illustrate the features of the lambda interpreter
+
+(import list.lambda church.lambda combinator.lambda)
+
+; Examples for list operations.
+
+(define list (cons 1 (cons 2 (cons 3 nil))))
+(display `Defining list:') (newline)
+(display -> list)          (newline)
+(newline)
+(display `Elements of list:' (car list) (cadr list) (caddr list))
+(newline)
+
+(newline)
+
+(define list+1 (map ++ list))
+(display `Incrementing elements of list using map:') (newline)
+(display -> list+1)                                  (newline)
+(newline)
+(display `Elements of list+1:' (car list+1) (cadr list+1) (caddr list+1))
+(newline)
+(newline)
+
+; Examples of Church numerals
+
+(define one    (successor zero))   (define two    (successor one))
+(define three  (successor two))    (define four   (successor three))
+(define five   (successor four))   (define six    (successor five))
+(define seven  (successor six))    (define eight  (successor seven))
+(define nine   (successor eight))  (define ten    (successor nine))
+(define eleven (successor ten))
+
+(define 7+11 (add seven eleven))
+(define 11+7 (add eleven seven))
+(define 7x11 (multiply seven eleven))
+(define 11x7 (multiply eleven seven))
+
+(display Church numerals:)                (newline)
+(display 7 + 11 = (church->integer 7+11)) (newline)
+(display 11 + 7 = (church->integer 11+7)) (newline)
+(display 7 * 11 = (church->integer 7x11)) (newline)
+(display 11 * 7 = (church->integer 11x7)) (newline)
+(newline)
+
+; Factorial using direct recursion and Church numerals
+
+(define ! (lambda (n)
+                  (if (zero? n)
+                      (successor zero) 
+                      (multiply n (! (predecessor n))) ) ) )
+
+(display Factorial using recursion:)       (newline)
+(display 0! = (church->integer (! zero)))  (newline)
+(display 3! = (church->integer (! three))) (newline)
+(display 5! = (church->integer (! five)))  (newline)
+(newline)
+
+; Factorial using anonymous recursion via the
+; Y-combinator and Church numerals
+
+(define fact
+ (lambda (f n)
+         (if (zero? n)    
+             (successor zero) 
+             (multiply n (f (predecessor n))) ) ) )
+
+(define ! (Y fact))
+
+(display Factorial using Y-combinator:)    (newline)
+(display 0! = (church->integer (! zero)))  (newline)
+(display 3! = (church->integer (! three))) (newline)
+(display 5! = (church->integer (! five)))  (newline)
+(newline)
+
+; Example of currying
+
+(define sum (lambda (x y) (+ x y)))
+(display sum)         (newline)
+(display (sum 3 5))   (newline)
+(define inc (sum 1))  
+(display inc)         (newline)
+(display (inc 3))     (newline)
